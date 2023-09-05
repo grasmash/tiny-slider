@@ -2371,13 +2371,21 @@ var tns = function(options) {
         end = range[1];
 
     forEach(slideItems, function(item, i) {
+      forEach(item.classList, function(className) {
+        if (typeof className == 'string' && className.startsWith(slideActiveClass + '-')) {
+          removeClass(item, className);
+        }
+      });
+
       // show slides
       if (i >= start && i <= end) {
+        addClass(item, slideActiveClass + '-' + (i - start));
+
         if (hasAttr(item, 'aria-hidden')) {
           removeAttrs(item, ['aria-hidden', 'tabindex']);
           addClass(item, slideActiveClass);
         }
-      // hide slides
+        // hide slides
       } else {
         if (!hasAttr(item, 'aria-hidden')) {
           setAttrs(item, {
